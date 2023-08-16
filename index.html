@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rupicard</title>
+</head>
+<body>
+
+<h2>Rupicard Submission Form</h2>
+
+<form id="dataForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br> <!-- Add the required attribute -->
+    <label for="mobile">Mobile Number:</label><br>
+    <input type="text" id="mobile" name="mobile" required><br><br> <!-- Add the required attribute -->
+    <input type="submit" value="Submit">
+</form>
+
+<div id="message"></div> <!-- Message container -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('dataForm');
+    const messageContainer = document.getElementById('message'); // Get the message container
+    
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const mobile = document.getElementById('mobile').value;
+
+        if (name && mobile) { // Check if both fields are not empty
+            sendDataToBackend(name, mobile);
+
+            // Clear the form fields
+            document.getElementById('name').value = '';
+            document.getElementById('mobile').value = '';
+            
+            // Display the success message
+            messageContainer.textContent = "Data successfully submitted!";
+        } else {
+            // Display an error message if fields are empty
+            messageContainer.textContent = "Please fill in all required fields.";
+        }
+    });
+});
+
+function sendDataToBackend(name, mobile) {
+    var data = new FormData();
+    data.append("name", name);
+    data.append("mobile", mobile);
+    
+    fetch("https://script.google.com/macros/s/AKfycbzmr1m9KZDckIU-KS5dJb9cs8xJQ5mg86y6zns3yG97M1iAX88mZF_z_f5sbfMc7NQFDw/exec", {
+        method: "POST",
+        body: data,
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        // Handle success or display a success message
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        // Handle errors or display an error message
+    });
+}
+</script>
+
+</body>
+</html>
